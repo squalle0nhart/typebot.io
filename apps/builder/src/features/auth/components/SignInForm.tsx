@@ -65,6 +65,16 @@ export const SignInForm = ({
       const providers = await getProviders()
       setProviders(providers ?? undefined)
       setIsLoadingProviders(false)
+
+      const url: URL = new URL(window.location.href)
+      const params: URLSearchParams = url.searchParams
+      const loggedEmail = params.get('email')
+      if (loggedEmail) {
+        await signIn('onboarding-signup', {
+          email: loggedEmail,
+          redirect: false,
+        })
+      }
     })()
   }, [status, router])
 
