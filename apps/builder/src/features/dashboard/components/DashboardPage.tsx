@@ -19,6 +19,7 @@ import { useTranslate } from '@tolgee/react'
 
 export const DashboardPage = () => {
   const { t } = useTranslate()
+  const enableHeader = false
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { user } = useUser()
@@ -59,7 +60,7 @@ export const DashboardPage = () => {
   return (
     <Stack minH="100vh">
       <Seo title={workspace?.name ?? t('dashboard.title')} />
-      <DashboardHeader />
+      {enableHeader && <DashboardHeader />}
       {!workspace?.stripeId && (
         <ParentModalProvider>
           <PreCheckoutModal

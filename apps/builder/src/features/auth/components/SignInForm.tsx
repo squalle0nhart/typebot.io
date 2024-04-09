@@ -87,7 +87,7 @@ export const SignInForm = ({
     if (isMagicLinkSent) return
     setAuthLoading(true)
     try {
-      const response = await signIn('email', {
+      const response = await signIn('onboarding-signup', {
         email: emailValue,
         redirect: false,
       })

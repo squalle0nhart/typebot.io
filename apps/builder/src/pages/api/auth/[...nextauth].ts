@@ -2,6 +2,7 @@ import NextAuth, { Account, AuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
@@ -21,10 +22,43 @@ import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { decode, encode } from 'next-auth/jwt'
 
 const providers: Provider[] = []
 
 let rateLimit: Ratelimit | undefined
+
+providers.push(
+  CredentialsProvider({
+    name: 'Onboarding Signup',
+    id: 'onboarding-signup',
+    credentials: {
+      email: { label: 'email', type: 'email', placeholder: 'email' },
+    },
+    async authorize(credentials) {
+      if (!credentials?.email) {
+        throw new Error('No email provided')
+      }
+
+      // If user exists, it means the user was here already here. He's not supposed to.
+      // Maybe it's just an accident
+      // Or it's sus af and someone may be trying to abuse this feature to impersonate the user
+      const userExists = await prisma.user.findUnique({
+        where: { email: credentials.email },
+      })
+
+      if (userExists) {
+        return userExists
+      }
+
+      const user = await adapter.createUser({
+        email: credentials.email,
+        emailVerified: null,
+      })
+      return user
+    },
+  })
+)
 
 if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
   rateLimit = new Ratelimit({
@@ -126,17 +160,20 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   })
 }
 
+const adapter = customAdapter(prisma)
 export const getAuthOptions = ({
   restricted,
 }: {
   restricted?: 'rate-limited'
 }): AuthOptions => ({
-  adapter: customAdapter(prisma),
+  adapter: adapter,
   secret: env.ENCRYPTION_SECRET,
   providers,
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   },
+  jwt: { encode, decode },
   pages: {
     signIn: '/signin',
     newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? '/onboarding' : undefined,
@@ -151,8 +188,10 @@ export const getAuthOptions = ({
     },
   },
   callbacks: {
-    session: async ({ session, user }) => {
-      const userFromDb = user as User
+    session: async ({ session }) => {
+      const userFromDb = (await adapter.getUserByEmail(
+        session.user?.email ?? ''
+      )) as User
       await updateLastActivityDate(userFromDb)
       return {
         ...session,
