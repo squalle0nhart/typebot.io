@@ -73,6 +73,14 @@ const nextConfig = {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' *.lwyer.com http://localhost:3000",
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
         ],
       },
     ]
