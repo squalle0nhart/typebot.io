@@ -20,7 +20,6 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { DividerWithText } from './DividerWithText'
 import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
 import { BuiltInProviderType } from 'next-auth/providers'
@@ -40,7 +39,7 @@ export const SignInForm = ({
   const { t } = useTranslate()
   const router = useRouter()
   const { status } = useSession()
-  const [authLoading, setAuthLoading] = useState(false)
+  const [authLoading, setAuthLoading] = useState(true)
   const [isLoadingProviders, setIsLoadingProviders] = useState(true)
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? '')
@@ -153,18 +152,20 @@ export const SignInForm = ({
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
             <>
-              <DividerWithText mt="6">{t('auth.orEmailLabel')}</DividerWithText>
+              {/* <DividerWithText mt="6">{t('auth.orEmailLabel')}</DividerWithText> */}
               <HStack as="form" onSubmit={handleEmailSubmit}>
                 <Input
                   name="email"
                   type="email"
+                  visibility={'hidden'}
                   autoComplete="email"
                   placeholder="email@company.com"
                   required
                   value={emailValue}
                   onChange={handleEmailChange}
                 />
-                <Button
+              </HStack>
+              <Button
                   type="submit"
                   isLoading={
                     ['loading', 'authenticated'].includes(status) || authLoading
@@ -173,7 +174,6 @@ export const SignInForm = ({
                 >
                   {t('auth.emailSubmitButton.label')}
                 </Button>
-              </HStack>
             </>
           )}
         </>

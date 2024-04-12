@@ -32,7 +32,7 @@ export const SignInPage = ({ type }: Props) => {
           ? t('auth.signin.heading')
           : t('auth.register.heading')}
       </Heading>
-      {type === 'signin' ? (
+      {/* {type === 'signin' ? (
         <Text>
           {t('auth.signin.noAccountLabel.preLink')}{' '}
           <TextLink href="/register">
@@ -46,7 +46,7 @@ export const SignInPage = ({ type }: Props) => {
             {t('auth.register.alreadyHaveAccountLabel.link')}
           </TextLink>
         </Text>
-      )}
+      )} */}
       <SignInForm defaultEmail={query.g?.toString()} />
       {type === 'signup' ? (
         <Text fontSize="sm" maxW="400px" textAlign="center">
