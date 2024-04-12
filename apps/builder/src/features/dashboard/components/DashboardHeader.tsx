@@ -7,18 +7,17 @@ import Link from 'next/link'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { useTranslate } from '@tolgee/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
-  const { user, logOut } = useUser()
-  const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
+  const { user } = useUser()
+  const { workspace } = useWorkspace()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const handleCreateNewWorkspace = () =>
-    createWorkspace(user?.name ?? undefined)
+  // const handleCreateNewWorkspace = () =>
+  //   createWorkspace(user?.name ?? undefined)
 
   return (
     <Flex w="full" borderBottomWidth="1px" justify="center">
@@ -54,12 +53,12 @@ export const DashboardHeader = () => {
               {t('dashboard.header.settingsButton.label')}
             </Button>
           )}
-          <WorkspaceDropdown
+          {/* <WorkspaceDropdown
             currentWorkspace={workspace}
             onLogoutClick={logOut}
             onCreateNewWorkspaceClick={handleCreateNewWorkspace}
             onWorkspaceSelected={switchWorkspace}
-          />
+          /> */}
         </HStack>
       </Flex>
     </Flex>

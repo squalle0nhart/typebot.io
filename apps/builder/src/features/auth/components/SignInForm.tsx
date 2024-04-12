@@ -166,14 +166,14 @@ export const SignInForm = ({
                 />
               </HStack>
               <Button
-                  type="submit"
-                  isLoading={
-                    ['loading', 'authenticated'].includes(status) || authLoading
-                  }
-                  isDisabled={isMagicLinkSent}
-                >
-                  {t('auth.emailSubmitButton.label')}
-                </Button>
+                type="submit"
+                isLoading={
+                  ['loading', 'authenticated'].includes(status) || authLoading
+                }
+                isDisabled={isMagicLinkSent}
+              >
+                {t('auth.emailSubmitButton.label')}
+              </Button>
             </>
           )}
         </>
