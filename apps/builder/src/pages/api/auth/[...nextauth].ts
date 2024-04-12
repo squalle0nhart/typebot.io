@@ -181,16 +181,16 @@ export const getAuthOptions = ({
         httpOnly: true,
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
     callbackUrl: {
       name: `__Secure-next-auth.callback-url`,
       options: {
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
     csrfToken: {
       name: `__Host-next-auth.csrf-token`,
@@ -198,8 +198,8 @@ export const getAuthOptions = ({
         httpOnly: true,
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
   },
   pages: {
