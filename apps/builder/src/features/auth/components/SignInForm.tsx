@@ -55,6 +55,11 @@ export const SignInForm = ({
     !isLoadingProviders && Object.keys(providers ?? {}).length === 0
 
   useEffect(() => {
+    if (window.parent === window) {
+      window.location.href = 'https://lwyer.co.uk/denied'
+      return
+    }
+
     if (status === 'authenticated') {
       const redirectPath = router.query.redirectPath?.toString()
       router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/typebots')

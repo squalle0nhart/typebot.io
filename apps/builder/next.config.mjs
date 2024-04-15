@@ -75,7 +75,8 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' *.lwyer.com http://localhost:3000",
+            value:
+              "frame-ancestors 'self' https://*.lwyer.co.uk http://localhost:3000",
           },
           {
             key: 'Referrer-Policy',
