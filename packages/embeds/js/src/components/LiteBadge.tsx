@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from 'solid-js'
-import { TypebotLogo } from './icons/TypebotLogo'
+// import { TypebotLogo } from './icons/TypebotLogo'
 
 type Props = {
   botContainer: HTMLDivElement | undefined
@@ -38,16 +38,17 @@ export const LiteBadge = (props: Props) => {
   })
 
   return (
-    <a
-      ref={liteBadge}
-      href={'https://www.typebot.io/?utm_source=litebadge'}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="lite-badge"
-      id="lite-badge"
-    >
-      <TypebotLogo />
-      <span>Made with Typebot</span>
-    </a>
+    <></>
+    // <a
+    //   ref={liteBadge}
+    //   href={'https://www.typebot.io/?utm_source=litebadge'}
+    //   target="_blank"
+    //   rel="noopener noreferrer"
+    //   class="lite-badge"
+    //   id="lite-badge"
+    // >
+    //   <TypebotLogo />
+    //   <span>Made with Typebot</span>
+    // </a>
   )
 }
